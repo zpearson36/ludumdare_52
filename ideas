@@ -1,0 +1,23 @@
+Farming and trade simulator.
+
+primary:
+Begin with farming simulator. Keep it simple: Plow, plant, grow, harvest, repeat.
+At the end of the season, a trader comes and will buy whatever is harvested.
+Must keep some harvest to sustain your character or else risk starvation.
+
+Secondary:
+can trade for other crops/seeds (and other materials).
+value of crops and other items based on in game economy
+BONUS: research/build tools to increase productivity
+BONUS: Hire help to automate farming
+
+Tertiary:
+Single large map
+trade routes determined by terrain
+value of crops/items determined by distance travelled & regional scarcity
+can form own trade caravan
+
+Quaternery:
+implement simple combat system
+have bandits & hostile regions that make travel risky
+can fight bandits and secure regions for easier access
