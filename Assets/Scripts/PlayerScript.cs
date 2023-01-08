@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
+    public Inventory inventory;
     public enum State
     {
         idle,
         walking,
-        action
+        action,
+        inventory
     }
+    public GameObject gameManager;
 
     [SerializeField] private State state;
     [SerializeField] private float speed = 3.0f;
     [SerializeField] private float walkingSpeed = 3.0f;
-    [SerializeField] private float RunningSpeed = 6.0f;
+    [SerializeField] private float runningSpeed = 6.0f;
     [SerializeField] private Rigidbody2D rb;
     // Start is called before the first frame update
     void Start()
@@ -31,20 +34,44 @@ public class PlayerScript : MonoBehaviour
         //    Debug.Log("Fire2");
         //if(Input.GetButtonDown("Fire3"))
         //    Debug.Log("Fire3");
+        if(Input.GetButtonDown("Jump"))
+            Debug.Log("Jump");
         //Debug.Log(getMovement().normalized * speed);
-        switch(state)
+        switch(gameManager.GetComponent<GameManager>().getState())
         {
-            case State.idle:
-                if(getMovement() != Vector2.zero)
-                    state = State.walking;
+            case GameManager.State.idle:
+                switch(state)
+                {
+                    case State.idle:
+                        if(Input.GetButtonDown("Jump"))
+                        {
+                            inventory.GetComponent<Inventory>().open();
+                            state = State.inventory;
+                            break;
+                        }
+                        if(getMovement() != Vector2.zero)
+                            state = State.walking;
+                        break;
+                    case State.walking:
+                        if(getMovement() == Vector2.zero)
+                            state = State.idle;
+                        speed = walkingSpeed;
+                        if(Input.GetButton("Fire2"))
+                            speed = runningSpeed;
+                        rb.velocity = getMovement().normalized * speed;
+                        break;
+                    case State.action:
+                        break;
+                    case State.inventory:
+                        if(Input.GetButtonDown("Fire2"))
+                        {
+                            inventory.GetComponent<Inventory>().close();
+                            state = State.idle;
+                        }
+                        break;
+                }
                 break;
-            case State.walking:
-                speed = walkingSpeed;
-                if(Input.GetButton("Fire2"))
-                    speed = RunningSpeed;
-                rb.velocity = getMovement().normalized * speed;
-                break;
-            case State.action:
+            default:
                 break;
         }
     }
